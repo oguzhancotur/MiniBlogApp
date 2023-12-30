@@ -1,9 +1,11 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:miniblogapp/blocs/article_bloc/article_bloc.dart';
+import 'package:miniblogapp/blocs/article_bloc/article_event.dart';
+import 'package:miniblogapp/blocs/article_bloc/article_state.dart';
 import 'package:miniblogapp/models/blog.dart';
-import 'package:http/http.dart' as http;
+import 'package:miniblogapp/repositories/article_repostory.dart';
 import 'package:miniblogapp/screens/add_blog.dart';
-import 'package:miniblogapp/screens/blog_details.dart';
 import 'package:miniblogapp/widgets/blog_item.dart';
 
 class Homepage extends StatefulWidget {
@@ -19,18 +21,6 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-
-    fetchBlogs();
-  }
-
-  fetchBlogs() async {
-    Uri url = Uri.parse("https://tobetoapi.halitkalayci.com/api/Articles");
-    final response = await http.get(url);
-    final List jsonData = json.decode(response.body);
-
-    setState(() {
-      blogs = jsonData.map((json) => Blog.fromJson(json)).toList();
-    });
   }
 
   @override
@@ -48,39 +38,51 @@ class _HomepageState extends State<Homepage> {
               bool? result = await Navigator.of(context).push(
                 MaterialPageRoute(builder: (ctx) => AddBlog()),
               );
-
               if (result == true) {
-                fetchBlogs();
+                context.read<ArticleBloc>().add(FetchArticles());
               }
             },
             icon: const Icon(Icons.add),
           )
         ],
       ),
-      body: blogs.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: () async {
-                fetchBlogs();
-              },
-              child: ListView.builder(
-                itemBuilder: (context, index) => InkWell(
-                  onTap: () {
-                    if (blogs[index].id != null) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              BlogDetails(blogId: blogs[index].id!),
-                        ),
-                      );
-                    }
-                  },
-                  child: BlogItem(blog: blogs[index]),
-                ),
-                itemCount: blogs.length,
-              ),
-            ),
+      body: Center(
+        child: BlocBuilder<ArticleBloc, ArticleState>(
+          builder: (context, state) {
+            if (state is ArticlesInitial) {
+              // bloc a fetchArticles eventi göndermek
+              context
+                  .read<ArticleBloc>()
+                  .add(FetchArticles()); // UI dan bloga event gelir.!
+              return const Center(
+                child: Text("İstek atılıyor..."),
+              );
+            }
+
+            if (state is ArticlesLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (state is ArticlesLoaded) {
+              return ListView.builder(
+                  itemCount: state.blogs.length,
+                  itemBuilder: (context, index) =>
+                      BlogItem(blog: state.blogs[index]));
+            }
+
+            if (state is ArticlesError) {
+              return const Center(
+                child: Text("Bloc'lar yüklenirken hata oluştu."),
+              );
+            }
+
+            return const Center(
+              child: Text("Unknow State"),
+            );
+          },
+        ),
+      ),
     );
   }
 }
