@@ -4,7 +4,6 @@ import 'package:miniblogapp/blocs/article_bloc/article_bloc.dart';
 import 'package:miniblogapp/blocs/article_bloc/article_event.dart';
 import 'package:miniblogapp/blocs/article_bloc/article_state.dart';
 import 'package:miniblogapp/models/blog.dart';
-import 'package:miniblogapp/repositories/article_repostory.dart';
 import 'package:miniblogapp/screens/add_blog.dart';
 import 'package:miniblogapp/widgets/blog_item.dart';
 
@@ -65,10 +64,15 @@ class _HomepageState extends State<Homepage> {
               );
             }
             if (state is ArticlesLoaded) {
-              return ListView.builder(
-                  itemCount: state.blogs.length,
-                  itemBuilder: (context, index) =>
-                      BlogItem(blog: state.blogs[index]));
+              return RefreshIndicator(
+                onRefresh: () async {
+                  context.read<ArticleBloc>().add(FetchArticles());
+                },
+                child: ListView.builder(
+                    itemCount: state.blogs.length,
+                    itemBuilder: (context, index) =>
+                        BlogItem(blog: state.blogs[index])),
+              );
             }
 
             if (state is ArticlesError) {

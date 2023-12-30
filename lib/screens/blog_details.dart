@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class BlogDetails extends StatefulWidget {
-  const BlogDetails({Key? key, required this.blogId}) : super(key: key);
+  const BlogDetails({Key? key, required this.id}) : super(key: key);
 
-  final String blogId;
+  final String id;
 
   @override
   _BlogDetailsState createState() => _BlogDetailsState();
@@ -13,24 +13,6 @@ class BlogDetails extends StatefulWidget {
 
 class _BlogDetailsState extends State<BlogDetails> {
   late Future<Map<String, dynamic>> _blogDetails;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _blogDetails = fetchBlogDetails(widget.blogId);
-  }
-
-  Future<Map<String, dynamic>> fetchBlogDetails(String id) async {
-    Uri url = Uri.parse("https://tobetoapi.halitkalayci.com/api/Articles/$id");
-    final response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      return Map<String, dynamic>.from(json.decode(response.body));
-    } else {
-      return {};
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
