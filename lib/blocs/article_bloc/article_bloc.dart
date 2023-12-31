@@ -12,6 +12,8 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
 
     on<FetchArticles>(
         _onFetchArticles); // event fırladıgında bir fonksiyon calıstırabilen bir bloc oldu
+
+    on<PostArticle>(_onPostArticle);
   }
 //Bu fonksiyondaki stat i değiştiricez !
   void _onFetchArticles(FetchArticles event, Emitter<ArticleState> emit) async {
@@ -28,5 +30,10 @@ class ArticleBloc extends Bloc<ArticleEvent, ArticleState> {
     } catch (e) {
       emit(ArticlesError());
     }
+  }
+
+  void _onPostArticle(PostArticle event, Emitter<ArticleState> emit) async {
+    await articleRepository.postBlog(
+        event.title, event.content, event.author, event.image);
   }
 }
