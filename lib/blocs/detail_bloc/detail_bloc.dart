@@ -22,8 +22,8 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
       final articles = await articleRepository.fetchBlogId(event.id);
       //article lar basarılı bir şekilde yüklendiyse burası
       emit(DetailLoaded(
-          blogs:
-              articles)); // article ve blog aynı isimdeler aynı şeyi ifade ediyorlar.
+        blogs: articles,
+      )); // article ve blog aynı isimdeler aynı şeyi ifade ediyorlar.
       //blocları catch ederken bir problem olmus blogları articleErrors durumuna almamız lazım
     } catch (e) {
       emit(DetailError());

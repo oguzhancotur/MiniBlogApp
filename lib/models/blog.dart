@@ -5,7 +5,12 @@ class Blog {
   String? thumbnail;
   String? author;
 
-  Blog({this.id, this.title, this.content, this.thumbnail, this.author});
+  Blog(
+      {required this.id,
+      required this.title,
+      required this.content,
+      required this.thumbnail,
+      required this.author});
 
   Blog.fromJson(Map<String, dynamic> json) {
     id = json['id'];

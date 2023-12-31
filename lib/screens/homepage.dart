@@ -26,7 +26,7 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 0, 180, 24),
+        backgroundColor: Colors.deepOrangeAccent,
         title: const Text(
           "Blog Sayfası",
           style: TextStyle(fontWeight: FontWeight.bold),
