@@ -57,12 +57,19 @@ class _HomepageState extends State<Homepage> {
                 child: Text("İstek atılıyor..."),
               );
             }
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+            );
 
             if (state is ArticlesLoading) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+            );
+
             if (state is ArticlesLoaded) {
               return RefreshIndicator(
                 onRefresh: () async {
@@ -74,6 +81,9 @@ class _HomepageState extends State<Homepage> {
                         BlogItem(blog: state.blogs[index])),
               );
             }
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+            );
 
             if (state is ArticlesError) {
               return const Center(

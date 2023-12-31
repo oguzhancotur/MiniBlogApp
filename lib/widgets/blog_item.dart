@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:miniblogapp/blocs/detail_bloc/detail_bloc.dart';
+import 'package:miniblogapp/blocs/detail_bloc/detail_event.dart';
 import 'package:miniblogapp/models/blog.dart';
+import 'package:miniblogapp/screens/blog_details.dart';
 
 class BlogItem extends StatelessWidget {
   const BlogItem({super.key, required this.blog});
@@ -8,19 +12,21 @@ class BlogItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.all(15),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
+    return InkWell(
+      onTap: () {
+        context.read<DetailBloc>().add(ResetEvent());
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BlogDetails(id: blog.id!),
+          ),
+        );
+      },
+      child: Card(
         child: Column(
           children: [
             AspectRatio(
-                aspectRatio: 4 / 2,
-                child: Container(
-                  width: double.infinity,
-                  color: Colors.grey[250],
-                  child: Center(child: Image.network(blog.thumbnail!)),
-                )),
+                aspectRatio: 4 / 2, child: Image.network(blog.thumbnail!)),
             ListTile(
               title: Text(blog.title!),
               subtitle: Text(blog.author!),

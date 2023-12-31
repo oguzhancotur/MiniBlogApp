@@ -5,3 +5,5 @@ class FetchDetailId extends DetailEvent {
 
   FetchDetailId({required this.id});
 } //UI tarafından triggerlandıgında geçiş işlemini yapar.
+
+class ResetEvent extends DetailEvent {}

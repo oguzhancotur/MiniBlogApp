@@ -34,7 +34,7 @@ class _BlogDetailsState extends State<BlogDetails> {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: Colors.deepOrangeAccent,
-              title: Text(state.blogs.title.toString()),
+              title: Text(state.blogs.title!),
             ),
             body: Padding(
               padding: const EdgeInsets.all(10),
@@ -42,18 +42,19 @@ class _BlogDetailsState extends State<BlogDetails> {
                 children: [
                   AspectRatio(
                     aspectRatio: 4 / 3,
-                    child: Image.network(state.blogs.thumbnail.toString()),
+                    child: Image.network(state.blogs.thumbnail!),
                   ),
                   Text(
-                    state.blogs.author.toString(),
+                    state.blogs.author!,
                     style: const TextStyle(
-                        color: Colors.deepOrangeAccent,
+                        color: Color.fromARGB(255, 220, 0, 0),
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    state.blogs.content.toString(),
+                    state.blogs.content!,
                     style: const TextStyle(
-                        color: Colors.deepOrange, fontWeight: FontWeight.bold),
+                        color: Color.fromARGB(255, 0, 0, 0),
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),

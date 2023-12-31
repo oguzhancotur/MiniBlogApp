@@ -12,6 +12,7 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
 
     on<FetchDetailId>(
         _onFetchDetailId); // event fırladıgında bir fonksiyon calıstırabilen bir bloc oldu
+    on<ResetEvent>(_onResetEvent);
   }
 //Bu fonksiyondaki stat i değiştiricez !
   void _onFetchDetailId(FetchDetailId event, Emitter<DetailState> emit) async {
@@ -28,5 +29,9 @@ class DetailBloc extends Bloc<DetailEvent, DetailState> {
     } catch (e) {
       emit(DetailError());
     }
+  }
+
+  void _onResetEvent(ResetEvent event, Emitter<DetailState> emit) async {
+    emit(DetailInitial());
   }
 }
