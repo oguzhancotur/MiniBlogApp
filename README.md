@@ -1,6 +1,6 @@
 # miniblogapp
 
-A new Flutter project.
+In this flutter project, a miniblog was designed using the bloc pattern.
 
 ## Getting Started
 
